@@ -24,11 +24,13 @@ senhas <- read_csv("bases/senhas.csv")
 ###########################################################################################
 #Login
 ###########################################################################################
+#Baseado em https://stackoverflow.com/questions/43404058/starting-shiny-app-after-password-input-with-shinydashboard
 Logged = FALSE
-my_username <- "teste"
-my_password <- "teste"
-#my_username <- ifelse(input$username %in% senhas$nome, input$username, NA)
-#my_password <- ifelse(input$password %in% senhas$senha, input$password, NA)
+#my_username <- "teste"
+#my_password <- "teste"
+my_username <- senhas$nome
+my_password <- senhas$senha
+
 ########################################################################################### 
 #UI
 ###########################################################################################
@@ -44,14 +46,14 @@ ui <- dashboardPage(skin = "blue",
             menuItem("Distritos",tabName = "distritos", icon = icon("dashboard")),  
             menuItem("Centros de Saúde", tabName = "centros_de_saude",icon = icon("dashboard")), 
             menuItem("Equipes", tabName = "esf", icon = icon("dashboard")), 
-            menuItem("Instruções", icon = icon("question-circle"),
-                     href = "https://github.com/analisededadosemsaudefloripa/saladesituacao/wiki/Instru%C3%A7%C3%B5es-para-Utiliza%C3%A7%C3%A3o-das-Salas-de-Situa%C3%A7%C3%A3o-em-Sa%C3%BAde"),
+            #menuItem("Instruções", icon = icon("question-circle"),
+                     #href = "https://github.com/analisededadosemsaudefloripa/saladesituacao/wiki/Instru%C3%A7%C3%B5es-para-Utiliza%C3%A7%C3%A3o-das-Salas-de-Situa%C3%A7%C3%A3o-em-Sa%C3%BAde"),
             #menuItem("Dados", icon = icon("database"),
                      #href = "http://floripadadosabertos.univille.br/"),
             menuItem("Código-fonte", icon = icon("code"), 
-                     href = "https://github.com/analisededadosemsaudefloripa/saladesituacao/blob/master/aps"),
+                     href = "https://github.com/lpgarcia18/lista_de_pacientes_ap"),
             menuItem("Licença de Uso", icon = icon("cc"), 
-                     href = "https://github.com/analisededadosemsaudefloripa/saladesituacao/blob/atencao_primaria/LICENSE")
+                     href = "https://github.com/lpgarcia18/lista_de_pacientes_ap/blob/master/LICENSE")
           )
         ),
         ########################################################################################### 
@@ -188,8 +190,8 @@ obs2 <- observe({
     Username <- input$username
     Password <- input$password
   })
-  Id.username <- which(my_username == Username)
-  Id.password <- which(my_password == Password)
+  Id.username <- if(Username %in% my_username){which(my_username == Username)}
+  Id.password <- if(Password %in% my_password){which(my_password == Password)}
   if (length(Id.username) > 0 & length(Id.password) > 0) {
     if (Id.username == Id.password) {
       Logged <<- TRUE
