@@ -268,7 +268,7 @@ output$florianopolis_info <- renderText({
 #gráfico 
 output$distritos_plot <- renderPlotly({
  
- distritos_lista <- dados[,c(2,7,8)] 
+ distritos_lista <- dados[,c(1,7,8)] 
  distritos_lista <- melt(distritos_lista) 
  names(distritos_lista) <- c("distritos", "LISTA", "VALOR")
  distritos_lista <- aggregate(distritos_lista$VALOR, by = list(distritos_lista$distritos, distritos_lista$LISTA), FUN = sum, na.rm=TRUE, na.action=NULL)
@@ -291,7 +291,7 @@ output$distritos_ativa_tab <- renderDataTable({
  
  distritos_lista <- dados 
  distritos_lista <- subset(distritos_lista, distritos_lista$POPULACAO_ATIVA == 1)
- distritos_lista <- distritos_lista[,-c(5,7,8)]
+ distritos_lista <- distritos_lista[,-c(6,7,8)]
  as.data.frame(distritos_lista, row.names = F)
  
 }, extensions = 'Buttons',
@@ -305,7 +305,7 @@ output$distritos_reserva_tab <- renderDataTable({
  
  distritos_lista <- dados 
  distritos_lista <- subset(distritos_lista, distritos_lista$POPULACAO_RESERVA == 1)
- distritos_lista <- distritos_lista[,-c(5,7,8)]
+ distritos_lista <- distritos_lista[,-c(6,7,8)]
  as.data.frame(distritos_lista, row.names = F)
  
 }, extensions = 'Buttons',
@@ -330,7 +330,7 @@ output$centros_de_saude_plot <- renderPlotly({
  
  centros_de_saude_lista <- dados[,c(1,2,7,8)]
  centros_de_saude_lista <- subset(centros_de_saude_lista, centros_de_saude_lista$DISTRITO == input$lista_cspordistrito)
- centros_de_saude_lista <- centros_de_saude_lista[,-2]
+ centros_de_saude_lista <- centros_de_saude_lista[,-1]
  centros_de_saude_lista <- melt(centros_de_saude_lista) 
  names(centros_de_saude_lista) <- c("UNIDADE", "LISTA", "VALOR")
  centros_de_saude_lista <- aggregate(centros_de_saude_lista$VALOR, by = list(centros_de_saude_lista$UNIDADE, centros_de_saude_lista$LISTA), FUN = sum, na.rm=TRUE, na.action=NULL)
@@ -341,7 +341,7 @@ output$centros_de_saude_plot <- renderPlotly({
          ylab("  ")+
          xlab("  ")+
          theme_classic()+
-         theme(axis.text.x = element_text(hjust = 1))
+         theme(axis.text.x = element_text(angle = 90, hjust = 1))
        
  ggplotly(a)
 
@@ -354,7 +354,7 @@ output$centros_de_saude_ativa_tab <- renderDataTable({
  centros_de_saude_lista <- dados
  centros_de_saude_lista <- subset(centros_de_saude_lista, centros_de_saude_lista$DISTRITO == input$lista_cspordistrito)
  centros_de_saude_lista <- subset(centros_de_saude_lista, centros_de_saude_lista$POPULACAO_ATIVA == 1)
- centros_de_saude_lista <- centros_de_saude_lista[,-c(5,7,8)]
+ centros_de_saude_lista <- centros_de_saude_lista[,-c(6,7,8)]
  as.data.frame(centros_de_saude_lista, row.names = F)
  
 }, extensions = 'Buttons',
@@ -369,7 +369,7 @@ output$centros_de_saude_reserva_tab <- renderDataTable({
  centros_de_saude_lista <- dados
  centros_de_saude_lista <- subset(centros_de_saude_lista, centros_de_saude_lista$DISTRITO == input$lista_cspordistrito)
  centros_de_saude_lista <- subset(centros_de_saude_lista, centros_de_saude_lista$POPULACAO_RESERVA == 1)
- centros_de_saude_lista <- centros_de_saude_lista[,-c(5,7,8)]
+ centros_de_saude_lista <- centros_de_saude_lista[,-c(6,7,8)]
  as.data.frame(centros_de_saude_lista, row.names = F)
  
 }, extensions = 'Buttons',
@@ -391,9 +391,11 @@ output$centros_de_saude_info <- renderText({
 #gráfico 
 output$esf_plot <- renderPlotly({
  
- esf_lista <- dados[,c(1,6,7,8)]
+ esf_lista <- dados[,c(2,3,7,8)]
  esf_lista <- subset(esf_lista, esf_lista$UNIDADE == input$lista_esfporcs)
  esf_lista <- esf_lista[,-1]
+ esf_lista$AREA <- esf_lista$EQUIPE
+ esf_lista$EQUIPE <- NULL
  esf_lista$AREA <- as.character(esf_lista$AREA)
  esf_lista <- melt(esf_lista) 
  names(esf_lista) <- c("AREA", "LISTA", "VALOR")
@@ -418,7 +420,7 @@ output$esf_ativa_tab <- renderDataTable({
  esf_lista <- dados
  esf_lista <- subset(esf_lista, esf_lista$UNIDADE == input$lista_esfporcs)
  esf_lista <- subset(esf_lista, esf_lista$POPULACAO_ATIVA == 1)
- esf_lista <- esf_lista[,-c(5,7,8)]
+ esf_lista <- esf_lista[,-c(6,7,8)]
  as.data.frame(esf_lista, row.names = F)
  
 }, extensions = 'Buttons',
@@ -433,7 +435,7 @@ output$esf_reserva_tab <- renderDataTable({
  esf_lista <- dados
  esf_lista <- subset(esf_lista, esf_lista$UNIDADE == input$lista_esfporcs)
  esf_lista <- subset(esf_lista, esf_lista$POPULACAO_RESERVA == 1)
- esf_lista <- esf_lista[,-c(5,7,8)]
+ esf_lista <- esf_lista[,-c(6,7,8)]
  as.data.frame(esf_lista, row.names = F)
  
 }, extensions = 'Buttons',
